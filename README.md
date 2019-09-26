@@ -40,7 +40,9 @@ for(int i=0; i<827; i++){
 | GetLCGSeed | `uint` | `uint, uint` | 初期seedと消費数からseedを取得. |
 
 ##### 拡張メソッド
+
 (もちろん普通に呼び出すこともできます).
+
 | 名前 | 戻り値 | 引数 | 説明 |
 |:-|:-|:-|:-|
 | NextSeed | `uint` | `this uint` | 1個先のseedを取得.  |
