@@ -1,0 +1,6 @@
+C:\Users\yatsu\Documents\develop\cs\PokemonPRNG\PokemonPRNG\bin\Release\PokemonPRNG.dll
+C:\Users\yatsu\Documents\develop\cs\PokemonPRNG\PokemonPRNG\bin\Release\PokemonPRNG.pdb
+C:\Users\yatsu\Documents\develop\cs\PokemonPRNG\PokemonPRNG\obj\Release\PokemonPRNG.csprojAssemblyReference.cache
+C:\Users\yatsu\Documents\develop\cs\PokemonPRNG\PokemonPRNG\obj\Release\PokemonPRNG.csproj.CoreCompileInputs.cache
+C:\Users\yatsu\Documents\develop\cs\PokemonPRNG\PokemonPRNG\obj\Release\PokemonPRNG.dll
+C:\Users\yatsu\Documents\develop\cs\PokemonPRNG\PokemonPRNG\obj\Release\PokemonPRNG.pdb
