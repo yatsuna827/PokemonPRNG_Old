@@ -1,13 +1,14 @@
 # PokemonPRNG
 author [夜綱](https://twitter.com/sub_827)
+## 注意
+このREADMEは書き換えです(は？)
 
 ## 概要
 ポケモンの乱数処理の記述にあると便利な処理をまとめたライブラリです.
 `ref this`を使用しているので, C# 7.2が必要です.
-今後余裕があればMTや64bitLCG, AlternatibeLCG等にも対応するかもしれませんし, しないかもしれません.
 
 ## 使い方
-`using PokemonPRNG.LCG32`するだけで
+`using PokemonPRNG.LCG32.StandardLCG`するだけで
 ```
 uint seed = 0xbadface;
 seed.Advance(827); // 827消費する.
@@ -24,20 +25,14 @@ for(int i=0; i<827; i++){
 | LCGType | `enum` | LCGの種類を指定する. |
 | LCG32 | `static class` | 具体的な処理を記述する. |
 
-#### `LCGType`
-|  | 名前 | 概要 | 更新処理 |
-|:-|:-|:-|:-|
-| 0 | StandardLCG | 3,4世代で一般的に用いられるLCG. | `S_{n+1} = 0x41C64E6D * S_n + 0x6073` |
-| 1 | GCLCG | コロシアム, XDで用いられるLCG. | `S_{n+1} = 0x343FD * S_n + 0x269EC3`|
-| 2 | StaticLCG | IDくじ用の乱数等に用いられるLCG. | `S_{n+1} = 0x41C64E6D * S_n + 0x3039 `|
-
-#### LCG32
-
-##### 呼び出せるメソッド
-| 名前 | 戻り値 | 引数 | 説明 |
-|:-|:-|:-|:-|
-| SetLCGType | `void` | `LCGType` | LCGの種類を変更.  |
-| GetLCGSeed | `uint` | `uint, uint` | 初期seedと消費数からseedを取得. |
+#### LCG32.XXX
+namespaceによってLCGの種類が異なりますが、処理の内容は同じです.
+| 名前 | 概要 | 更新処理 |
+|:-|:-|:-|
+| StandardLCG | 3,4世代で一般的に用いられるLCG. | `S_{n+1} = 0x41C64E6D * S_n + 0x6073` |
+| GCLCG | コロシアム, XDで用いられるLCG. | `S_{n+1} = 0x343FD * S_n + 0x269EC3`|
+| StaticLCG | IDくじ用の乱数等に用いられるLCG. | `S_{n+1} = 0x41C64E6D * S_n + 0x3039 `|
+| ReverseStdLCG | StandardLCGの逆列. | `S_{n+1} = 0xEEB9EB65 * S_n + 0xA3561A1` |
 
 ##### 拡張メソッド
 
