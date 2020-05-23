@@ -42,6 +42,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LCG32.cs" />
+    <Compile Include="LCG64.cs" />
+    <Compile Include="LCGType.cs" />
+    <Compile Include="MT.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
