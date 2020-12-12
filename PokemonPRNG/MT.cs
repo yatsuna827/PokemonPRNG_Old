@@ -72,6 +72,7 @@
    email: m-mat @ math.sci.hiroshima-u.ac.jp (remove space)
 */
 
+using System.Linq;
 namespace PokemonPRNG.MT
 {
     /// <summary>
@@ -87,34 +88,15 @@ namespace PokemonPRNG.MT
     /// </remarks>
     public class MT
     {
-        /* Period parameters */
         private const int N = 624;
         private const int M = 397;
         private const uint MATRIX_A = 0x9908b0df;   /* constant vector a */
         private const uint UPPER_MASK = 0x80000000; /* most significant w-r bits */
         private const uint LOWER_MASK = 0x7fffffff; /* least significant r bits */
 
-        private readonly uint[] seedTable = new uint[N]; /* the array for the state vector  */
-        private short index = N + 1; /* mti==N+1 means mt[N] is not initialized */
+        private readonly uint[] stateVector; /* the array for the state vector  */
+        private int randIndex; /* mti==N+1 means mt[N] is not initialized */
 
-        /// <summary>
-        /// 初期内部ベクトルの計算
-        /// </summary>
-        /// <param name="seed"></param>
-        private void Initialize(uint seed)
-        {
-            seedTable[0] = seed;
-            for (uint i = 1; i < N; i++)
-                seedTable[i] = 0x6C078965u * (seedTable[i - 1] ^ (seedTable[i - 1] >> 30)) + i;
-
-            index = N;
-        }
-
-        /// <summary>
-        /// "調律"処理
-        /// </summary>
-        /// <param name="y"></param>
-        /// <returns></returns>
         private static uint Temper(uint y)
         {
             y ^= (y >> 11);
@@ -124,48 +106,54 @@ namespace PokemonPRNG.MT
             return y;
         }
 
-        /// <summary>
-        /// 乱数を1個得る
-        /// </summary>
-        /// <returns>調律済32bit乱数</returns>
         public uint GetRand()
         {
-            if (index >= N) Update();
+            if (randIndex >= N) Update();
 
-            return Temper(seedTable[index++]);
+            return Temper(stateVector[randIndex++]);
         }
         private void Update()
         {
             uint temp;
             for (var k = 0; k < N - M; k++)
             {
-                temp = (seedTable[k] & UPPER_MASK) | (seedTable[k + 1] & LOWER_MASK);
-                seedTable[k] = seedTable[k + M] ^ (temp >> 1);
-                if ((temp & 1) == 1) seedTable[k] ^= MATRIX_A;
+                temp = (stateVector[k] & UPPER_MASK) | (stateVector[k + 1] & LOWER_MASK);
+                stateVector[k] = stateVector[k + M] ^ (temp >> 1);
+                if ((temp & 1) == 1) stateVector[k] ^= MATRIX_A;
             }
             for (var k = N - M; k < N - 1; k++)
             {
-                temp = (seedTable[k] & UPPER_MASK) | (seedTable[k + 1] & LOWER_MASK);
-                seedTable[k] = seedTable[k + (M - N)] ^ (temp >> 1);
-                if ((temp & 1) == 1) seedTable[k] ^= MATRIX_A;
+                temp = (stateVector[k] & UPPER_MASK) | (stateVector[k + 1] & LOWER_MASK);
+                stateVector[k] = stateVector[k + (M - N)] ^ (temp >> 1);
+                if ((temp & 1) == 1) stateVector[k] ^= MATRIX_A;
             }
 
-            temp = (seedTable[N - 1] & UPPER_MASK) | (seedTable[0] & LOWER_MASK);
-            seedTable[N - 1] = seedTable[M - 1] ^ (temp >> 1);
-            if ((temp & 1) == 1) seedTable[N - 1] ^= MATRIX_A;
+            temp = (stateVector[N - 1] & UPPER_MASK) | (stateVector[0] & LOWER_MASK);
+            stateVector[N - 1] = stateVector[M - 1] ^ (temp >> 1);
+            if ((temp & 1) == 1) stateVector[N - 1] ^= MATRIX_A;
 
-            index = 0;
+            randIndex = 0;
         }
 
         public uint GetSeed()
         {
-            return Temper(seedTable[index]);
+            return Temper(stateVector[randIndex]);
         }
 
+        public MT Clone() => new MT(this);
+
+        private MT(MT parent) { this.randIndex = parent.randIndex; this.stateVector = parent.stateVector.ToArray(); }
         public MT(uint seed)
         {
-            Initialize(seed);
+            // 配列初期化
+            stateVector = new uint[N];
+            
+            // 内部状態の初期化
+            stateVector[0] = seed;
+            for (uint i = 1; i < N; i++)
+                stateVector[i] = 0x6C078965u * (stateVector[i - 1] ^ (stateVector[i - 1] >> 30)) + i;
+
+            randIndex = N;
         }
     }
-
 }
