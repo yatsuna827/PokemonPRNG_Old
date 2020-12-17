@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="LCG32\GCLCG\Enumerator.cs" />
     <Compile Include="LCG32\GCLCG\LCG.cs" />
+    <Compile Include="LCG32\ICriteria.cs" />
     <Compile Include="LCG32\IGeneratable.cs" />
     <Compile Include="LCG32\LCG32.cs" />
     <Compile Include="LCG32\StandardLCG\Enumerator.cs" />
